@@ -11,6 +11,26 @@ const routes = [
     component: HomeView
   },
   {
+    path: '/products',
+    name: 'products',
+    component: () => import( '../components/Products.vue')
+  },
+  {
+    path: '/my-products',
+    name: 'my-products',
+    component: () => import( '../components/Myproducts.vue')
+  },
+  {
+    path: '/signin',
+    name: 'signin',
+    component: () => import( '../components/Signin.vue')
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: () => import( '../components/Signup.vue')
+  },
+  {
     path: '/about',
     name: 'about',
     // route level code-splitting

@@ -1,0 +1,73 @@
+<template>
+    
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;" >
+  <div class="container-fluid">
+    
+    <button
+      data-mdb-collapse-init
+      class="navbar-toggler"
+      type="button"
+      data-mdb-target="#navbarTogglerDemo03"
+      aria-controls="navbarTogglerDemo03"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <router-link class="nav-link active" aria-current="page" to="/"  >Home</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link active"  aria-current="page" to="/about">About</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link active"  aria-current="page" to="/products">Products</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link active"  aria-current="page" to="/my-products">MyProducts</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link active"  aria-current="page" to="/signin">Signin</router-link>
+        </li>
+         <li class="nav-item">
+          <router-link class="nav-link active"  aria-current="page" to="/signup">Signup</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link active"  aria-current="page" to="/">Logout</router-link>
+        </li>
+       
+        
+        
+      </ul>
+     
+    </div>
+  </div>
+  
+  <div class="content">
+</div>
+</nav>
+
+</template>
+
+<script>
+
+
+export default {
+  name: 'NavbarView',
+  components: {
+  }
+}
+</script>
+
+
+<style>
+.navbar {
+  margin-bottom: 20px; 
+}
+
+.content {
+  padding: 20px; 
+}
+</style>
