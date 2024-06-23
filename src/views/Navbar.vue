@@ -36,7 +36,7 @@
         </li>
         <li class="nav-item" v-if="user">
           <a class="nav-link active" href="#" @click.prevent="logout">Logout</a>
-        </li>
+           </li>
        
        
         
