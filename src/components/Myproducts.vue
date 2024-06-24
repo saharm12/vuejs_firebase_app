@@ -17,8 +17,8 @@
                 <p>{{ product.description }}</p>
                 <h6 class="mb-3">{{ product.price }}</h6>
               </div>
-              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" @click="getData(product.name, product.description, product.price, product.image, product.id)" type="button">Update product</button>
-              <button class="btn btn-danger" type="button">Delete product</button>
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" @click="getData(product.name, product.price, product.description, product.image, product.id)" type="button">Update product</button>
+              <button class="btn btn-danger" @click="deleteProduct(product.id)" type="button">Delete product</button>
             </div>
           </div>
         </div>
@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import { collection, addDoc, getDocs, query, where, doc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { projectFirestore } from '../firebase';
 
 export default {
@@ -185,6 +185,16 @@ export default {
         this.fetchProducts();
       } catch (error) {
         console.error('Error updating document: ', error);
+      }
+    },
+    async deleteProduct(key) {
+      try {
+        const productRef = doc(projectFirestore, 'products', key);
+        await deleteDoc(productRef);
+        this.messageSuccess = 'Product deleted!';
+        this.fetchProducts();
+      } catch (error) {
+        console.error('Error deleting document: ', error);
       }
     }
   },
