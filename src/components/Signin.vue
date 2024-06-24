@@ -54,18 +54,19 @@ export default {
     }
 
   },
-  methods:{
-    loginUser() {
-      signInWithEmailAndPassword(projectAuth, this.user.email, this.user.password)
-        .then(() => {
-          router.push({ name: 'home' });
-        })
-        .catch(() => {
-          this.messagerError='Invalid email and password'
-
-        });
-    }
-  
+  methods: {
+    async loginUser() {
+      try {
+        const userCredential = await signInWithEmailAndPassword(projectAuth, this.user.email, this.user.password);
+        const uid = userCredential.user.uid;
+        localStorage.setItem("uidUser", uid); // Enregistrez l'UID dans le localStorage
+        this.uid = uid; // Mettez à jour l'UID dans l'état du composant
+        router.push({ name: 'home' }); // Redirigez l'utilisateur vers la page d'accueil
+      } catch (error) {
+        console.error('Error signing in: ', error);
+        this.messagerError = 'Invalid email and password'; // Gestion des erreurs d'authentification
+      }
+    },
   }
   }
 </script>

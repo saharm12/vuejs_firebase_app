@@ -7,28 +7,15 @@
       <div class="text-center container py-5">
         <h4 class="mt-4"><strong>My Products</strong></h4>
         <div class="row">
-          <div class="col-lg-4 col-md-12 mb-4" v-for="product in products" :key="product.id">
+          <div class="col-lg-4 col-md-12 mb-4" v-for="product in products" :key="product.id "  >
             <div class="card">
               <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light" data-mdb-ripple-color="light">
-                <img :src="product.image" class="w-100" />
-                <a href="#!">
-                  <div class="mask">
-                    <div class="d-flex justify-content-start align-items-end h-100">
-                      <h5><span class="badge bg-primary ms-2">New</span></h5>
-                    </div>
-                  </div>
-                  <div class="hover-overlay">
-                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                  </div>
-                </a>
+                <img v-bind:src="product.image" class="w-100" />
+                
               </div>
               <div class="card-body">
-                <a href="" class="text-reset">
                   <h5 class="card-title mb-3">{{ product.name }}</h5>
-                </a>
-                <a href="" class="text-reset">
                   <p>{{ product.description }}</p>
-                </a>
                 <h6 class="mb-3">{{ product.price }}</h6>
               </div>
             </div>
@@ -80,7 +67,7 @@
 </template>
 
 <script>
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
 import { projectFirestore } from '../firebase';
 
 export default {
@@ -92,8 +79,10 @@ export default {
         name: '',
         price: 0,
         description: '',
-        image: ''
+        image: '',
+        uid: localStorage.getItem("uidUser")
       },
+      uid: localStorage.getItem("uidUser"),
       ref: collection(projectFirestore, 'products'),
       messageSuccess: ''
     };
@@ -101,29 +90,34 @@ export default {
   methods: {
     async newProduct() {
       try {
+        // Assurez-vous que l'UID est défini avant d'ajouter le produit
+        this.newProductData.uid = this.uid;
+        
         await addDoc(this.ref, this.newProductData);
-        this.messageSuccess = 'Product added !';
-        this.fetchProducts(); 
+        this.messageSuccess = 'Product added!';
+        this.fetchProducts();
         this.newProductData = {
           name: '',
           price: 0,
           description: '',
-          image: ''
+          image: '',
+          uid: this.uid
         };
       } catch (error) {
         console.error('Error adding document: ', error);
       }
     },
     async fetchProducts() {
-      try {
-        const querySnapshot = await getDocs(this.ref);
-        this.products = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-      } catch (error) {
-        console.error('Error fetching documents: ', error);
-      }
+    try {
+      const q = query(this.ref, where("uid", "==", this.uid));
+      const querySnapshot = await getDocs(q);
+      this.products = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+    } catch (error) {
+      console.error('Error fetching documents: ', error);
     }
+  }
   },
-  mounted() {
+  created() {
     this.fetchProducts();
   }
 };

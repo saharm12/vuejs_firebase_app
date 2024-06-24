@@ -84,6 +84,7 @@ export default {
     logout(){
       signOut(projectAuth)
         .then(() => {
+          localStorage.removeItem("uidUser")
           router.push({ name: 'signin' });
         })
         .catch((error) => {

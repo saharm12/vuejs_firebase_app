@@ -63,27 +63,22 @@ export default {
     };
   },
   methods: {
-    signUp() {
-      createUserWithEmailAndPassword(projectAuth, this.user.email, this.user.password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          return addDoc(this.ref, {
-            name: this.user.name,
-            email: this.user.email,
-            uid: user.uid
-          });
-          
-        })
-        
-        .then(() => {
-          this.messagerSuccess='Welcome!',
-          router.push({ name: 'home' });
-          
-        })
-        .catch((error) => {
-          console.error("Error signing up: ", error);
-          this.messagerError = 'Invalid email and password';
+    async signUp() {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(projectAuth, this.user.email, this.user.password);
+        const user = userCredential.user;
+        await addDoc(this.ref, {
+          name: this.user.name,
+          email: this.user.email,
+          uid: user.uid
         });
+        localStorage.setItem("uidUser", user.uid); // Enregistrez l'UID dans le localStorage
+        this.messagerSuccess = 'Welcome!';
+        router.push({ name: 'signin' });
+      } catch (error) {
+        console.error("Error signing up: ", error);
+        this.messagerError = 'Invalid email and password';
+      }
     }
   }
 }
